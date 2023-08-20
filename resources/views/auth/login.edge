@@ -1,0 +1,87 @@
+@layout('layouts/auth')
+@set('title', 'Login')
+@section('head')
+@super
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@end
+
+@section('body')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 col-xl-6">
+            @if(flashMessages.has('form.error'))
+            <div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+                <i class="ri-error-warning-line me-3 align-middle fs-16 text-danger "></i><strong>Error</strong>
+                - {{flashMessages.get('form.error')}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @elseif(flashMessages.has('form.success'))
+
+            <div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+                <i class="ri-notification-off-line me-3 align-middle fs-16 text-success"></i><strong>Success</strong>
+                - {{flashMessages.get('form.success')}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @end
+            <div class="card overflow-hidden m-0">
+                <div class="p-lg-5 p-4">
+                    <div>
+                        <h5 class="text-warning">Welcome Back !</h5>
+                        <p class="text-muted">Sign in to continue to ForexPrime.</p>
+                    </div>
+
+                    <div class="mt-4">
+                        <form method="post" action="{{route('login')}}" class="needs-validation" novalidate>
+
+                            <div class="mb-3">
+                                <label for="useremail" class="form-label">Email {{-- <span class="text-danger">*</span>
+                                    --}}
+                                </label>
+                                <input value="{{ flashMessages.get('email', '') ?? '' }}" name="email" type="email"
+                                    class="form-control" id="useremail" placeholder="Enter email address" required>
+                                <div class="invalid-feedback">
+                                    Please enter email
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                {{-- <div class="float-end">
+                                    <a href="auth-pass-reset-cover.html" class="text-muted">Forgot password?</a>
+                                </div> --}}
+                                <label class="form-label" for="password-input">Password</label>
+                                <div class="position-relative auth-pass-inputgroup mb-3">
+                                    <input value="{{ flashMessages.get('password', '') ?? '' }}" type="password"
+                                        name="password" class="form-control pe-5 password-input"
+                                        placeholder="Enter password" id="password-input">
+                                    <button
+                                        class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                                        type="button" id="password-addon"><i
+                                            class="ri-eye-fill align-middle"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="form-check">
+                                <input name="rememberMeToken" class="form-check-input" type="checkbox"
+                                    id="auth-remember-check">
+                                <label class="form-check-label" for="auth-remember-check">Remember me</label>
+                            </div>
+
+
+
+                            <div class="mt-4">
+                                <button class="btn btn-warning w-100" type="submit" style="color: black;">Sign
+                                    In</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="mt-5 text-center">
+                        <p class="mb-0">Don't have an account ? <a href="{{route('signup.show')}}"
+                                class="fw-semibold text-warning text-decoration-underline"> Signup</a> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@end

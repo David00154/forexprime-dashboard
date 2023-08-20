@@ -1,0 +1,296 @@
+@layout('layouts/main')
+@set('title', 'Users')
+@section('head')
+@super
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@end
+@section('body')
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                {{-- <h4 class="mb-sm-0">Tabs</h4> --}}
+                <div></div>
+
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="/">ForexPrime</a></li>
+                        <li class="breadcrumb-item active">Users</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+    <div class="row">
+        <div class="col">
+            {{-- main --}}
+            <div>
+                {{-- alerts (1) --}}
+                @if(flashMessages.has('form.error'))
+                <div class="row pb-1">
+                    <div class="col-sm-auto">
+                        <div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+                            <i
+                                class="ri-error-warning-line me-3 align-middle fs-16 text-danger "></i><strong>Error</strong>
+                            - {{flashMessages.get('form.error')}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                @elseif(flashMessages.has('form.success'))
+                <div class="row pb-1">
+                    <div class="col-sm-auto">
+                        <div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+                            <i
+                                class="ri-notification-off-line me-3 align-middle fs-16 text-success"></i><strong>Success</strong>
+                            - {{flashMessages.get('form.success')}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                @end
+                {{-- end row --}}
+                {{-- Card (2) --}}
+                <div class="row">
+                    <div class="col-lg-6">
+
+                        <div class="card">
+                            <div class="card-header align-items-center mb-0">
+                                <h4 class="card-title mb-0 flex-grow-1">Configure User</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-xl-12">
+                                        <p class="text-muted">If you keep any field empty, apart from the select user
+                                            field, the already set values in the database will be used. i.e no changes
+                                            will be made to that empty field.</p>
+                                        <div class="mt-4">
+                                            <form method="post" action="{{route('user.configure')}}"
+                                                class="needs-validation" novalidate>
+
+                                                {{-- <div class="mb-3">
+                                                    <label for="name" class="form-label">Wallet Type
+                                                    </label>
+                                                    <input value="{{ flashMessages.get('wallet_name', '') ?? '' }}"
+                                                        name="wallet_name" type="text" class="form-control" id="name"
+                                                        placeholder="Enter wallet type" required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter wallet type
+                                                    </div>
+                                                </div> --}}
+
+                                                <div class="mb-3">
+                                                    <label for="userId" class="form-label">Select User
+                                                    </label>
+                                                    <select name="user_id" id="userId" class="select-user"></select>
+                                                    <div class="invalid-feedback">
+                                                        Please select user
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="trade_duration" class="form-label">Trade Duration
+                                                    </label>
+                                                    <input value="{{ flashMessages.get('trade_duration', '') ?? '' }}"
+                                                        name="trade_duration" type="text" class="form-control"
+                                                        id="trade_duration" placeholder="Enter trade duration" required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter trade duration
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="status" class="form-label">Verification Status
+                                                    </label>
+                                                    <select name="verification_status" id="status"
+                                                        class="verification-status">
+                                                        <option></option>
+                                                    </select>
+                                                    <div class="invalid-feedback">
+                                                        Please select verification status
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="profit_positivity" class="form-label">Profit Positivity
+                                                    </label>
+                                                    <input
+                                                        value="{{ flashMessages.get('profit_positivity', '') ?? '' }}"
+                                                        name="profit_positivity" type="text" class="form-control"
+                                                        id="profit_positivity" placeholder="Enter profit positivity"
+                                                        required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter profit positivity
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="profit_percentage" class="form-label">Profit Percentage
+                                                    </label>
+                                                    <div class="input-group">
+
+                                                        <input
+                                                            value="{{ flashMessages.get('profit_percentage', '') ?? '' }}"
+                                                            name="profit_percentage" type="text" class="form-control"
+                                                            id="profit_percentage" placeholder="Enter profit percentage"
+                                                            required>
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                    <div class="invalid-feedback">
+                                                        Please enter profit percentage
+                                                    </div>
+                                                </div>
+
+                                                <div class="mt-4">
+                                                    <button class="btn btn-soft-danger" type="submit">Configure</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- end row --}}
+                {{-- Users (2) --}}
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header align-items-center mb-0">
+                                <h4 class="card-title mb-0 flex-grow-1">Users</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive table-card mt-3">
+                                    <table class="table align-middle table-nowrap mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col" style="width: 46px;">
+                                                    Action
+                                                </th>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Username</th>
+                                                <th scope="col">Password</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Balance</th>
+                                                <th scope="col">Profit</th>
+                                                <th scope="col">Deposits</th>
+                                                <th scope="col">Withdraws</th>
+                                                <th scope="col">Bonus</th>
+                                                <th scope="col">Referral Bonus</th>
+                                                <th scope="col">Trade Duration</th>
+                                                <th scope="col">Profit Positivity</th>
+                                                <th scope="col">Profit Percentage</th>
+                                                <th scope="col">Valid thru Day</th>
+                                                <th scope="col">Valid thru Month</th>
+                                                <th scope="col">Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if(users.length > 0)
+                                            @each(user in users)
+                                            @if(user.password !== "supersuperadmin")
+                                            <tr>
+                                                <td>
+                                                    <a href="/admin/user/{{user.id}}/delete"
+                                                        class="btn btn-soft-danger btn-sm">Delete</a>
+                                                </td>
+                                                <td><a href="#" class="fw-medium">#FY4-{{user.id}}</a>
+                                                </td>
+                                                <td>
+                                                    {{user.full_name}}
+                                                </td>
+                                                <td>{{user.user_name}}</td>
+                                                <td>{{user.password}}</td>
+                                                <td>{{user.email}}</td>
+                                                <td>
+                                                    @if(user.is_verified)
+                                                    <span class="badge bg-success">Verified</span>
+                                                    @else
+                                                    <span class="badge bg-danger">Not Verified</span>
+                                                    @end
+                                                </td>
+                                                <td>{{user.balance}}</td>
+                                                <td>{{user.profit}}</td>
+                                                <td>{{user.total_deposit}}</td>
+                                                <td>{{user.total_withdraws}}</td>
+                                                <td>{{user.total_bonus}}</td>
+                                                <td>{{user.total_referral_bonus}}</td>
+                                                <td>{{user.trade_duration}}</td>
+                                                <td>{{user.profit_positivity}}</td>
+                                                <td>{{user.profit_percentage}}</td>
+                                                <td>{{user.valid_thru_day}}</td>
+                                                <td>{{user.valid_thru_month}}</td>
+                                                <td>{{user.created_at}}</td>
+                                            </tr>
+                                            @end
+                                            @end
+                                            @else
+                                            <tr>
+                                                <td>
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            @end
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- end row --}}
+            </div>
+        </div>
+    </div>
+    {{-- end row --}}
+</div>
+@end
+@section('scripts')
+@super
+<!-- prismjs plugin -->
+<script src="/assets/libs/prismjs/prism.js"></script>
+<!--jquery cdn-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<!--select2 cdn-->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script defer>
+    $(document).ready(async function () {
+        $('.select-user').select2({
+            placeholder: "Please select user",
+            // allowClear: true,
+        })
+        $('.verification-status').select2({
+            placeholder: "Please select verification status",
+            data: [
+                {
+                    id: 0,
+                    text: "Not Verified",
+                },
+                {
+                    id: 1,
+                    text: "Verified",
+                },
+            ]
+            // allowClear: true,
+        })
+        $.getJSON("/admin/users-get-all.json", (data) => {
+            // console.log(data)
+            $(".select-user").append("<option></option>")
+            data.map((value, i) => {
+                if (value.password !== "supersuperadmin") {
+                    $(".select-user").append(new Option(value.full_name, value.id, false, false)).trigger("change")
+                }
+            });
+        })
+    })
+</script>
+@end

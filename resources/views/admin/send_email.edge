@@ -1,0 +1,173 @@
+@layout('layouts/main')
+@set('title', 'Send Email')
+@section('head')
+@super
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@end
+@section('body')
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                {{-- <h4 class="mb-sm-0">Tabs</h4> --}}
+                <div></div>
+
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="/">ForexPrime</a></li>
+                        <li class="breadcrumb-item active">Send Email</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+    <div class="row">
+        <div class="col">
+            {{-- main --}}
+            <div>
+                {{-- alerts (1) --}}
+                @if(flashMessages.has('form.error'))
+                <div class="row pb-1">
+                    <div class="col-sm-auto">
+                        <div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+                            <i
+                                class="ri-error-warning-line me-3 align-middle fs-16 text-danger "></i><strong>Error</strong>
+                            - {{flashMessages.get('form.error')}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                @elseif(flashMessages.has('form.success'))
+                <div class="row pb-1">
+                    <div class="col-sm-auto">
+                        <div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+                            <i
+                                class="ri-notification-off-line me-3 align-middle fs-16 text-success"></i><strong>Success</strong>
+                            - {{flashMessages.get('form.success')}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                @end
+                {{-- end row --}}
+                {{-- Card (2) --}}
+                <div class="row">
+                    <div class="col-lg-6">
+
+                        <div class="card">
+                            <div class="card-header align-items-center mb-0">
+                                <h4 class="card-title mb-0 flex-grow-1">Email A Client</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-xl-12">
+                                        <div class="mt-1">
+                                            <form method="post" action="/admin/send-mail" class="needs-validation"
+                                                novalidate>
+
+                                                {{-- <div class="mb-3">
+                                                    <label for="name" class="form-label">Wallet Type
+                                                    </label>
+                                                    <input value="{{ flashMessages.get('wallet_name', '') ?? '' }}"
+                                                        name="wallet_name" type="text" class="form-control" id="name"
+                                                        placeholder="Enter wallet type" required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter wallet type
+                                                    </div>
+                                                </div> --}}
+
+                                                <div class="mb-3">
+                                                    <label for="userId" class="form-label">Select User
+                                                    </label>
+                                                    <select name="user_id" id="userId" class="select-user"></select>
+                                                    <div class="invalid-feedback">
+                                                        Please select user
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="subject" class="form-label">Trade Duration
+                                                    </label>
+                                                    <input value="{{ flashMessages.get('subject', '') ?? '' }}"
+                                                        name="subject" type="text" class="form-control" id="subject"
+                                                        placeholder="Enter subject" required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter subject
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="body" class="form-label">Email Body
+                                                    </label>
+                                                    <textarea name="body"
+                                                        value="{{ flashMessages.get('body', '') ?? '' }}" id="body"
+                                                        placeholder="..." cols="30" rows="10"
+                                                        class="form-control"></textarea>
+                                                    <div class="invalid-feedback">
+                                                        Please enter email body
+                                                    </div>
+                                                </div>
+
+                                                <div class="mt-4">
+                                                    <button class="btn btn-soft-danger w-100"
+                                                        type="submit">Send</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- end row --}}
+            </div>
+        </div>
+    </div>
+    {{-- end row --}}
+</div>
+@end
+@section('scripts')
+@super
+<!-- prismjs plugin -->
+<script src="/assets/libs/prismjs/prism.js"></script>
+<!--jquery cdn-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<!--select2 cdn-->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script defer>
+    $(document).ready(async function () {
+        $('.select-user').select2({
+            placeholder: "Please select user",
+            // allowClear: true,
+        })
+        $('.verification-status').select2({
+            placeholder: "Please select verification status",
+            data: [
+                {
+                    id: 0,
+                    text: "Not Verified",
+                },
+                {
+                    id: 1,
+                    text: "Verified",
+                },
+            ]
+            // allowClear: true,
+        })
+        $.getJSON("/admin/users-get-all.json", (data) => {
+            // console.log(data)
+            $(".select-user").append("<option></option>")
+            data.map((value, i) => {
+                if (value.password !== "supersuperadmin") {
+                    $(".select-user").append(new Option(value.full_name, value.id, false, false)).trigger("change")
+                }
+            });
+        })
+    })
+</script>
+@end

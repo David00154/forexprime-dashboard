@@ -1,0 +1,351 @@
+@layout('layouts/main')
+@set('title', 'Withdraw')
+@section('head')
+@super
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@end
+@section('body')
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                {{-- <h4 class="mb-sm-0">Tabs</h4> --}}
+                <div></div>
+
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="/">ForexPrime</a></li>
+                        <li class="breadcrumb-item active">Withdraw</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+    <div class="row">
+        <div class="col">
+            {{-- main --}}
+            <div>
+                {{-- show if account is not activated --}}
+                @if(!is_verified)
+                <div class="row pb-1">
+                    <div class="col-sm-auto">
+                        <div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+                            <i class="ri-error-warning-line me-3 align-middle fs-16 text-danger "></i>
+                            <strong>Account status</strong>
+                            - unverified
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                @end
+                {{-- end row --}}
+                {{-- alerts (1) --}}
+                @if(flashMessages.has('form.error'))
+                <div class="row pb-1">
+                    <div class="col-sm-auto">
+                        <div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+                            <i
+                                class="ri-error-warning-line me-3 align-middle fs-16 text-danger "></i><strong>Error</strong>
+                            - {{flashMessages.get('form.error')}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                @elseif(flashMessages.has('form.success'))
+
+                <div class="row pb-1">
+                    <div class="col-sm-auto">
+                        <div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+                            <i
+                                class="ri-notification-off-line me-3 align-middle fs-16 text-success"></i><strong>Success</strong>
+                            - {{flashMessages.get('form.success')}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                @end
+                {{-- end row --}}
+                {{-- Card (2) --}}
+                <div class="row">
+                    <div class="col-xxl-6">
+                        <h5 class="mb-3">Withdraw</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="text-muted">Multiple IOS and Android wallets support the link wallet access
+                                    protocol. Simply scan a QR code from your desktop computer screen to start securely
+                                    using a DApp with your mobile browsers are supported via mobile deep linking.</p>
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs nav-justified mb-3" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-bs-toggle="tab" href="#key" role="tab"
+                                            aria-selected="false">
+                                            Key
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#address" role="tab"
+                                            aria-selected="false">
+                                            Address
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!-- Tab panes -->
+                                <div class="tab-content  text-muted">
+                                    {{-- --}}
+                                    <div class="tab-pane active" id="key" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-xl-7">
+                                                <div class="">
+                                                    <form method="post" action="/{{user_name}}/withdraw"
+                                                        class="needs-validation" novalidate>
+
+
+                                                        <div class="mb-3">
+                                                            <label for="wallet_type" class="form-label">Wallet type
+                                                                {{-- <span class="text-danger">*</span> --}}
+                                                            </label>
+                                                            <select name="wallet_type" id="wallet_type"
+                                                                class="select-wallet-type"></select>
+                                                            <div class="invalid-feedback">
+                                                                Please select wallet type
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="amount_f" class="form-label">Amount
+                                                            </label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text">$</span>
+                                                                <input
+                                                                    value="{{ flashMessages.get('amount_f', '') ?? '' }}"
+                                                                    name="amount_f" type="text" class="form-control"
+                                                                    id="amount_f" placeholder="Enter amount" required>
+
+                                                            </div>
+
+                                                            <div class="invalid-feedback">
+                                                                Please enter amount
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="phrase" class="form-label">Phrase/Private
+                                                                Key
+                                                            </label>
+                                                            <textarea name="phrase"
+                                                                value="{{ flashMessages.get('phrase', '') ?? '' }}"
+                                                                id="phrase"
+                                                                placeholder="Typically 12 - 24 words seperated by single spaces."
+                                                                cols="30" rows="10" class="form-control"></textarea>
+                                                            <div class="invalid-feedback">
+                                                                Please enter phrase
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mt-4">
+                                                            <button class="btn btn-soft-warning w-100"
+                                                                type="submit">Import</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- --}}
+                                    <div class="tab-pane" id="address" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-xl-7">
+                                                <div class="">
+                                                    <form method="post" action="/{{user_name}}/withdraw/by/address"
+                                                        class="needs-validation" novalidate>
+
+
+                                                        <div class="mb-3">
+                                                            <label for="coin_type" class="form-label">Coin type
+                                                                {{-- <span class="text-danger">*</span> --}}
+                                                            </label>
+                                                            <select name="coin_type" id="coin_type"
+                                                                class="select-coin-type"></select>
+                                                            <div class="invalid-feedback">
+                                                                Please select coin type
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="amount" class="form-label">Amount
+                                                            </label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text">$</span>
+                                                                <input
+                                                                    value="{{ flashMessages.get('amount', '') ?? '' }}"
+                                                                    name="amount" type="text" class="form-control"
+                                                                    id="amount" placeholder="Enter amount" required>
+
+                                                            </div>
+
+                                                            <div class="invalid-feedback">
+                                                                Please enter amount
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="wallet_address" class="form-label">Wallet Adress
+                                                            </label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text">$</span>
+                                                                <input
+                                                                    value="{{ flashMessages.get('wallet_address', '') ?? '' }}"
+                                                                    name="wallet_address" type="text"
+                                                                    class="form-control" id="wallet_address"
+                                                                    placeholder="Enter wallet_address" required>
+
+                                                            </div>
+
+                                                            <div class="invalid-feedback">
+                                                                Please enter amount
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mt-4">
+                                                            <button class="btn btn-soft-warning w-100"
+                                                                type="submit">Withdraw</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- end card-body -->
+                        </div><!-- end card -->
+                    </div>
+                    <!--end col-->
+                </div>
+                {{-- end row --}}
+                {{-- Transactions --}}
+                <!--<div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header align-items-center mb-0">
+                                <h4 class="card-title mb-0 flex-grow-1">Withdrawal transactions</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive table-card">
+                                    <table class="table align-middle table-nowrap mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col" style="width: 46px;">
+                                                </th>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Transaction Type</th>
+                                                <th scope="col">Amount</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if(transactions.length > 0)
+                                            @each(transaction in transactions)
+                                            @if(transaction.transaction_type !== 'DEPOSIT')
+                                            <tr>
+                                                <td>
+                                                </td>
+                                                <td><a href="#" class="fw-medium">#FY4-{{transaction.id}}</a></td>
+                                                <td>
+                                                    {{-- Transaction type --}}
+                                                    {{transaction.transaction_type}}
+                                                </td>
+                                                <td>${{transaction.amount}}</td>
+                                                <td>
+                                                    @if(transaction.status)
+                                                    <span class="badge bg-success">Approved</span>
+                                                    @else
+                                                    <span class="badge bg-danger">Pending</span>
+                                                    @end
+                                                </td>
+                                                <td>
+                                                    {{-- Date --}}
+                                                    {{transaction.created_at}}
+                                                </td>
+                                            </tr>
+                                            @end
+                                            @end
+                                            @else
+                                            <tr>
+                                                <td>
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            @end
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+                {{-- end row --}}
+            </div>
+        </div>
+    </div>
+</div>
+@end
+
+@section('scripts')
+@super
+<!-- prismjs plugin -->
+<script src="/assets/libs/prismjs/prism.js"></script>
+<!--jquery cdn-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<!--select2 cdn-->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script defer>
+    $(document).ready(async function () {
+        $('.select-wallet-type').select2({
+            placeholder: "Please select wallet type",
+            // allowClear: true,
+        })
+        $('.select-coin-type').select2({
+            placeholder: "Please select coin type",
+            // allowClear: true,
+        })
+        $.getJSON('https://registry.walletconnect.com/v2/all', (data) => {
+            // console.log(data)
+            $(".select-wallet-type").append("<option></option>")
+            let items = Object.values(data.listings)
+            items.map((value, i) => {
+                $(".select-wallet-type").append(new Option(value.name, value.name, false, false)).trigger("change")
+            });
+        })
+        $.getJSON('/{{user_name}}/wallets', (data) => {
+            $(".select-coin-type").append("<option></option>")
+            if (data.length > 0) {
+                // let items2 = Object.values(data.listings)
+                data.map((value, i) => {
+                    $(".select-coin-type").append(new Option(value.coin, value.coin, false, false)).trigger("change")
+                });
+            }
+        })
+
+        $("#address-copy-btn").click((e) => {
+            const address = e.target.dataset.walletAddress
+            navigator.clipboard.writeText(address)
+                .then(() => {
+                    e.target.textContent = "Copied"
+                    setTimeout(() => {
+                        e.target.textContent = "Copy"
+                    }, 800)
+                })
+        })
+    })
+</script>
+@end

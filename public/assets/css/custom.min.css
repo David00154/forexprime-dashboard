@@ -1,0 +1,75 @@
+/*# sourceMappingURL=custom.min.css.map */
+.auth-bg-cover {
+    background: none;
+}
+
+.form-check-input:checked {
+    /* --vz-btn-bg */
+    background-color: #ffc061;
+    border-color: #ffc061;
+}
+
+@media (max-width: 767.98px) {
+
+    :is([data-layout=vertical], [data-layout=semibox]) .navbar-brand-box,
+    .navbar-brand-box {
+        display: block;
+    }
+}
+
+.circle {
+    position: relative;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.circle-inner {
+    height: 68px;
+    display: flex;
+    flex-direction: column;
+    width: 68px;
+    background-color: var(--vz-card-bg);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle-inner h3 {
+    font-size: 11px !important;
+}
+
+@media (max-width: 768px) {
+    .card-body.trade-widget-viewer {
+        padding: 0px;
+    }
+}
+
+@media (min-width: 768px) {
+    .card.cards-header-home {
+        height: 158px;
+    }
+}
+
+[data-layout=semibox] .profile-header-img.mx-n4 {
+    margin-right: -1.5rem !important;
+    margin-left: -1.5rem !important;
+}
+
+.profile-header-img>.profile-wid-bg::before {
+    display: none;
+}
+
+@media (max-width: 568px) {
+    .row>* {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+}
+
+[data-layout-mode=dark] {}

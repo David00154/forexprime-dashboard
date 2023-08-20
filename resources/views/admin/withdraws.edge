@@ -1,0 +1,268 @@
+@layout('layouts/main')
+@set('title', 'Users Withdraws')
+@section('body')
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                {{-- <h4 class="mb-sm-0">Tabs</h4> --}}
+                <div></div>
+
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="/">ForexPrime</a></li>
+                        <li class="breadcrumb-item active">Users Withdraws</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+    <div class="row">
+        <div class="col">
+            {{-- main --}}
+            <div>
+                {{-- alerts (1) --}}
+                @if(flashMessages.has('form.error'))
+                <div class="row pb-1">
+                    <div class="col-sm-auto">
+                        <div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+                            <i
+                                class="ri-error-warning-line me-3 align-middle fs-16 text-danger "></i><strong>Error</strong>
+                            - {{flashMessages.get('form.error')}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                @elseif(flashMessages.has('form.success'))
+                <div class="row pb-1">
+                    <div class="col-sm-auto">
+                        <div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+                            <i
+                                class="ri-notification-off-line me-3 align-middle fs-16 text-success"></i><strong>Success</strong>
+                            - {{flashMessages.get('form.success')}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                @end
+                {{-- end row --}}
+                {{-- Phrase Withdraws --}}
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header align-items-center mb-0">
+                                <h4 class="card-title mb-0 flex-grow-1">Withdrawals by phrase</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive table-card">
+                                    <table class="table align-middle table-nowrap mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col">
+                                                    Action
+                                                </th>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Transaction Type</th>
+                                                <th scope="col">Amount</th>
+                                                <th scope="col">User ID</th>
+                                                <th scope="col">Wallet Type</th>
+                                                <th scope="col">Wallet Phrase</th>
+
+                                                {{-- <th scope="col">Amount</th> --}}
+                                                {{-- <th scope="col">Status</th> --}}
+                                                {{-- <th scope="col">Date</th> --}}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if(transactions.length > 0)
+                                            @each(transaction in transactions)
+                                            @if(transaction.transaction_type !== 'DEPOSIT' && transaction.phrase !==
+                                            null)
+                                            <tr>
+                                                <td>
+                                                    <button class="btn btn-soft-info btn-sm" id="phrase-copy-btn"
+                                                        data-phrase="{{transaction.phrase}}">Copy Phrase</button>
+                                                </td>
+                                                <td><a href="#" class="fw-medium">#FY4-{{transaction.id}}</a></td>
+                                                <td>
+                                                    {{-- Transaction type --}}
+                                                    {{transaction.transaction_type}}
+                                                </td>
+                                                <td>
+                                                    {{transaction.amount}}
+                                                </td>
+                                                <td>
+                                                    {{transaction.user_id}}
+                                                </td>
+                                                <td>
+                                                    {{transaction.wallet_type}}
+                                                </td>
+                                                <td>
+                                                    {{transaction.phrase}}
+                                                </td>
+                                                {{-- <td>${{transaction.amount}}</td> --}}
+                                                {{-- <td>
+                                                    @if(transaction.status)
+                                                    <span class="badge bg-success">Approved</span>
+                                                    @else
+                                                    <span class="badge bg-danger">Pending</span>
+                                                    @end
+                                                </td> --}}
+                                                {{-- <td>
+                                                    {{transaction.created_at}}
+                                                </td> --}}
+                                            </tr>
+                                            @end
+                                            @end
+                                            @else
+                                            <tr>
+                                                <td>
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            @end
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- end row --}}
+                {{-- Address Withdraws --}}
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header align-items-center mb-0">
+                                <h4 class="card-title mb-0 flex-grow-1">Withdrawals by address</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive table-card">
+                                    <table class="table align-middle table-nowrap mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col">
+                                                    Action
+                                                </th>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Transaction Type</th>
+                                                <th scope="col">Amount</th>
+
+                                                <th scope="col">User ID</th>
+                                                <th scope="col">Coin</th>
+                                                <th scope="col">Wallet Address</th>
+
+                                                {{-- <th scope="col">Amount</th> --}}
+                                                {{-- <th scope="col">Status</th> --}}
+                                                {{-- <th scope="col">Date</th> --}}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if(transactions.length > 0)
+                                            @each(transaction in transactions)
+                                            @if(transaction.transaction_type !== 'DEPOSIT' && transaction.wallet_address
+                                            !== null)
+                                            <tr>
+                                                <td>
+                                                    <button class="btn btn-soft-info btn-sm" id="address-copy-btn"
+                                                        data-address="{{transaction.wallet_address}}">Copy
+                                                        Address</button>
+                                                </td>
+                                                <td><a href="#" class="fw-medium">#FY4-{{transaction.id}}</a></td>
+                                                <td>
+                                                    {{-- Transaction type --}}
+                                                    {{transaction.transaction_type}}
+                                                </td>
+                                                <td>
+                                                    {{transaction.amount}}
+                                                </td>
+                                                <td>
+                                                    {{transaction.user_id}}
+                                                </td>
+                                                <td>
+                                                    {{transaction.wallet_type}}
+                                                </td>
+                                                <td>
+                                                    {{transaction.wallet_address}}
+                                                </td>
+                                                {{-- <td>${{transaction.amount}}</td> --}}
+                                                {{-- <td>
+                                                    @if(transaction.status)
+                                                    <span class="badge bg-success">Approved</span>
+                                                    @else
+                                                    <span class="badge bg-danger">Pending</span>
+                                                    @end
+                                                </td> --}}
+                                                {{-- <td>
+                                                    {{transaction.created_at}}
+                                                </td> --}}
+                                            </tr>
+                                            @end
+                                            @end
+                                            @else
+                                            <tr>
+                                                <td>
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            @end
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- end row --}}
+            </div>
+        </div>
+    </div>
+    {{-- end row --}}
+</div>
+@end
+
+@section('scripts')
+@super
+<!-- prismjs plugin -->
+<script src="/assets/libs/prismjs/prism.js"></script>
+<!--jquery cdn-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<!--select2 cdn-->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script defer>
+    $(document).ready(async function () {
+        $("#phrase-copy-btn").click((e) => {
+            const phrase = e.target.dataset.phrase
+            navigator.clipboard.writeText(phrase)
+                .then(() => {
+                    e.target.textContent = "Copied"
+                    setTimeout(() => {
+                        e.target.textContent = "Copy Phrase"
+                    }, 800)
+                })
+        })
+        $("#address-copy-btn").click((e) => {
+            const address = e.target.dataset.address
+            navigator.clipboard.writeText(address)
+                .then(() => {
+                    e.target.textContent = "Copied"
+                    setTimeout(() => {
+                        e.target.textContent = "Copy Address"
+                    }, 800)
+                })
+        })
+    })
+</script>
+@end

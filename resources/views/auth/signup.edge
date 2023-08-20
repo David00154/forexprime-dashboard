@@ -1,0 +1,172 @@
+@layout('layouts/auth')
+@set('title', 'Signup')
+@section('head')
+@super
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@end
+
+@section('body')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 col-xl-6">
+            @if(flashMessages.has('form.error'))
+
+            <div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+                <i class="ri-error-warning-line me-3 align-middle fs-16 text-danger "></i><strong>Error</strong>
+                - {{flashMessages.get('form.error')}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @end
+            <div class="card overflow-hidden m-0">
+                <div class="p-lg-5 p-4">
+                    <div>
+                        <h5 class="text-warning">Register Account</h5>
+                        <p class="text-muted">Get your ForexPrime trading account now.</p>
+                    </div>
+
+                    <div class="mt-4">
+                        <form method="post" action="{{route('signup')}}" class="needs-validation" novalidate>
+                            <div class="mb-3">
+                                <label for="full_name" class="form-label">Full Name
+                                    {{-- <span class="text-danger">*</span> --}}
+                                </label>
+                                <input value="{{ flashMessages.get('fullName', '') ?? '' ?? '' }}" name="fullName"
+                                    type="text" class="form-control" id="full_name" placeholder="Enter full name"
+                                    required>
+                                <div class="invalid-feedback">
+                                    Please enter full name
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email {{-- <span class="text-danger">*</span>
+                                    --}}
+                                </label>
+                                <input value="{{ flashMessages.get('email', '') ?? '' }}" name="email" type="email"
+                                    class="form-control" id="email" placeholder="Enter email address" required>
+                                <div class="invalid-feedback">
+                                    Please enter email
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="country" class="form-label">Country
+                                    {{-- <span class="text-danger">*</span> --}}
+                                </label>
+                                <select name="country" id="country" class="select-country"></select>
+                                <div class="invalid-feedback">
+                                    Please select country
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username
+                                    {{-- <span class="text-danger">*</span> --}}
+                                </label>
+                                <input value="{{ flashMessages.get('userName', '') ?? '' }}" name="userName" type="text"
+                                    class="form-control" id="username" placeholder="Enter username" required>
+                                <div class="invalid-feedback">
+                                    Please enter username
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                {{-- <input value="{{ flashMessages.get('phoneNumber', '') ?? '' }}" type="text"
+                                    class="form-control" id="cleave-phone" name="phoneNumber"
+                                    placeholder="(xxx)xxx-xxxx"> --}}
+                                <input value="{{ flashMessages.get('phoneNumber', '') ?? '' }}" type="text"
+                                    class="form-control" id="phone" name="phoneNumber" placeholder="Enter phone number">
+                                <div class="invalid-feedback">
+                                    Please enter phone number
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" for="password-input">Password</label>
+                                <div class="position-relative auth-pass-inputgroup">
+                                    <input value="{{ flashMessages.get('password', '') ?? '' }}" name="password"
+                                        type="password" class="form-control pe-5 password-input" onpaste="return false"
+                                        placeholder="Enter password" id="password-input"
+                                        aria-describedby="passwordInput" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                        required>
+                                    <button
+                                        class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                                        type="button" id="password-addon"><i
+                                            class="ri-eye-fill align-middle"></i></button>
+                                    <div class="invalid-feedback">
+                                        Please enter password
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" for="re-enter_password-input">Re-enter Password</label>
+                                <div class="position-relative auth-pass-inputgroup">
+                                    <input value="{{ flashMessages.get('re-enter_password', '') ?? '' }}"
+                                        name="re-enter_password" type="password"
+                                        class="form-control pe-5 password-input" onpaste="return false"
+                                        placeholder="Re password" id="re-enter_password-input"
+                                        aria-describedby="re-enterPasswordInput"
+                                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                                    <button
+                                        class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                                        type="button" id="password-addon"><i
+                                            class="ri-eye-fill align-middle"></i></button>
+                                    <div class="invalid-feedback">
+                                        Please re-enter password
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <p class="mb-0 fs-13 text-muted fst-italic">By registering you agree to the ForexPrime
+                                    <a href="#"
+                                        class="text-warning text-decoration-underline fst-normal fw-semibold">Terms of
+                                        Use</a></p>
+                            </div>
+
+                            <div id="password-contain" class="p-3 bg-light mb-2 rounded">
+                                <h5 class="fs-14">Password must contain:</h5>
+                                <p id="pass-length" class="invalid fs-13 mb-2">Minimum <b>8 characters</b></p>
+                                <p id="pass-lower" class="invalid fs-13 mb-2">At <b>lowercase</b> letter (a-z)</p>
+                                <p id="pass-upper" class="invalid fs-13 mb-2">At least <b>uppercase</b> letter (A-Z)</p>
+                                <p id="pass-number" class="invalid fs-13 mb-0">A least <b>number</b> (0-9)</p>
+                            </div>
+
+                            <div class="mt-4">
+                                <button class="btn btn-warning w-100" type="submit" style="color: black;">Sign
+                                    Up</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="mt-5 text-center">
+                        <p class="mb-0">Already have an account ? <a href="{{route('login.show')}}"
+                                class="fw-semibold text-warning text-decoration-underline"> Signin</a> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@end
+
+@section('scripts')
+@super
+<script defer>
+    $(document).ready(async function () {
+        $('.select-country').select2({
+            placeholder: "Please select country",
+            // allowClear: true,
+        })
+        $.getJSON('https://raw.githubusercontent.com/David00154/countries-states-cities-database/master/countries.json', (data) => {
+            // console.log(data)
+            $(".select-country").append("<option></option>")
+            data.map((value, i) => {
+                $(".select-country").append(new Option(value.name, value.name, false, false)).trigger("change")
+            });
+        })
+    })
+</script>
+@end

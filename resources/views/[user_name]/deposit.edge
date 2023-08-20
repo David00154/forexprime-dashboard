@@ -1,0 +1,323 @@
+@layout('layouts/main')
+@set('title', 'Deposit')
+
+@section('head')
+@super
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@end
+
+@section('body')
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                {{-- <h4 class="mb-sm-0">Tabs</h4> --}}
+                <div></div>
+
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="/">ForexPrime</a></li>
+                        <li class="breadcrumb-item active">Deposit</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+    <div class="row">
+        <div class="col">
+            {{-- main --}}
+            <div>
+                {{-- show if account is not activated --}}
+                @if(!is_verified)
+                <div class="row pb-1">
+                    <div class="col-sm-auto">
+                        <div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+                            <i class="ri-error-warning-line me-3 align-middle fs-16 text-danger "></i>
+                            <strong>Account status</strong>
+                            - unverified
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                @end
+                {{-- end row --}}
+                {{-- alerts (1) --}}
+                @if(flashMessages.has('form.error'))
+                <div class="row pb-1">
+                    <div class="col-sm-auto">
+                        <div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+                            <i
+                                class="ri-error-warning-line me-3 align-middle fs-16 text-danger "></i><strong>Error</strong>
+                            - {{flashMessages.get('form.error')}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                @elseif(flashMessages.has('form.success'))
+
+                <div class="row pb-1">
+                    <div class="col-sm-auto">
+                        <div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+                            <i
+                                class="ri-notification-off-line me-3 align-middle fs-16 text-success"></i><strong>Success</strong>
+                            - {{flashMessages.get('form.success')}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                @end
+                {{-- end row --}}
+                <div class="row">
+                    <div class="col-xxl-6">
+                        <h5 class="mb-3">Deposit</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="text-muted">Copy wallet address to make a deposit. If you are done with making
+                                    deposit, you can submit a deposit requestl</p>
+
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs nav-justified mb-3" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-bs-toggle="tab" href="#copy_address" role="tab"
+                                            aria-selected="false">
+                                            Copy wallet address
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#submit_transaction" role="tab"
+                                            aria-selected="false">
+                                            Submit deposit transaction
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!-- Tab panes -->
+                                <div class="tab-content  text-muted">
+
+                                    {{-- --}}
+                                    <div class="tab-pane active" id="copy_address" role="tabpanel">
+                                        <div class="table-responsive table-card mt-3">
+                                            <table class="table align-middle table-nowrap mb-0">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th scope="col" style="width: 46px;">
+                                                        </th>
+                                                        <th scope="col">ID</th>
+                                                        <th scope="col">Wallet Name</th>
+                                                        <th scope="col">Address</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if(wallets.length > 0)
+                                                    @each(wallet in wallets)
+                                                    <tr>
+                                                        <td>
+                                                            <button class="btn btn-soft-info btn-sm"
+                                                                id="address-copy-btn"
+                                                                data-wallet-address="{{wallet.wallet_address}}">Copy</button>
+                                                        </td>
+                                                        <td><a href="#" class="fw-medium">#FY4-{{wallet.id}}</a>
+                                                        </td>
+                                                        <td>
+                                                            {{wallet.wallet_name}}
+                                                        </td>
+                                                        <td>{{wallet.wallet_address}}</td>
+                                                    </tr>
+                                                    @end
+                                                    @else
+                                                    <tr>
+                                                        <td>
+                                                        </td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    @end
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    {{-- --}}
+                                    <div class="tab-pane" id="submit_transaction" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-xl-7">
+                                                <div class="">
+                                                    <form method="post" action="/{{user_name}}/deposit"
+                                                        class="needs-validation" novalidate>
+
+
+                                                        <div class="mb-3">
+                                                            <label for="coin_type" class="form-label">Coin type
+                                                                {{-- <span class="text-danger">*</span> --}}
+                                                            </label>
+                                                            <select name="coin_type" id="coin_type"
+                                                                class="select-coin-type"></select>
+                                                            <div class="invalid-feedback">
+                                                                Please select coin type
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="amount" class="form-label">Amount
+                                                            </label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text">$</span>
+                                                                <input
+                                                                    value="{{ flashMessages.get('amount', '') ?? '' }}"
+                                                                    name="amount" type="text" class="form-control"
+                                                                    id="amount" placeholder="Enter amount" required>
+
+                                                            </div>
+
+                                                            <div class="invalid-feedback">
+                                                                Please enter amount
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="wallet_address" class="form-label">Wallet Adress
+                                                            </label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text">$</span>
+                                                                <input
+                                                                    value="{{ flashMessages.get('wallet_address', '') ?? '' }}"
+                                                                    name="wallet_address" type="text"
+                                                                    class="form-control" id="wallet_address"
+                                                                    placeholder="Enter wallet address" required>
+
+                                                            </div>
+
+                                                            <div class="invalid-feedback">
+                                                                Please wallet address
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mt-4">
+                                                            <button class="btn btn-soft-info w-100"
+                                                                type="submit">Submit</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- end card-body -->
+                        </div><!-- end card -->
+                    </div>
+                    <!--end col-->
+                </div>
+                {{-- end row --}}
+                {{-- Transactions --}}
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header align-items-center mb-0">
+                                <h4 class="card-title mb-0 flex-grow-1">Deposit transactions</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive table-card">
+                                    <table class="table align-middle table-nowrap mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col" style="width: 46px;">
+                                                </th>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Coin Type</th>
+                                                <th scope="col">Amount</th>
+                                                {{-- <th scope="col">Status</th> --}}
+                                                <th scope="col">Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if(transactions.length > 0)
+                                            @each(transaction in transactions)
+                                            @if(transaction.transaction_type !== 'WITHDRAWAL')
+                                            <tr>
+                                                <td>
+                                                </td>
+                                                <td><a href="#" class="fw-medium">#FY4-{{transaction.id}}</a></td>
+                                                <td>
+                                                    {{-- Transaction type --}}
+                                                    {{transaction.wallet_type}}
+                                                </td>
+                                                <td>${{transaction.amount}}</td>
+                                                {{-- <td>
+                                                    @if(transaction.status)
+                                                    <span class="badge bg-success">Approved</span>
+                                                    @else
+                                                    <span class="badge bg-danger">Pending</span>
+                                                    @end
+                                                </td> --}}
+                                                <td>
+                                                    {{-- Date --}}
+                                                    {{transaction.created_at}}
+                                                </td>
+                                            </tr>
+                                            @end
+                                            @end
+                                            @else
+                                            <tr>
+                                                <td>
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            @end
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- end row --}}
+            </div>
+        </div>
+    </div>
+</div>
+@end
+
+@section('scripts')
+@super
+<!-- prismjs plugin -->
+<script src="/assets/libs/prismjs/prism.js"></script>
+<!--jquery cdn-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<!--select2 cdn-->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script defer>
+    $(document).ready(async function () {
+        $("#address-copy-btn").click((e) => {
+            const address = e.target.dataset.walletAddress
+            navigator.clipboard.writeText(address)
+                .then(() => {
+                    e.target.textContent = "Copied"
+                    setTimeout(() => {
+                        e.target.textContent = "Copy"
+                    }, 800)
+                })
+        })
+
+        $('.select-coin-type').select2({
+            placeholder: "Please select coin type",
+            // allowClear: true,
+        })
+        $.getJSON('/{{user_name}}/wallets', (data) => {
+            $(".select-coin-type").append("<option></option>")
+            if (data.length > 0) {
+                // let items2 = Object.values(data.listings)
+                data.map((value, i) => {
+                    $(".select-coin-type").append(new Option(value.coin, value.coin, false, false)).trigger("change")
+                });
+            }
+        })
+    })
+</script>
+@end

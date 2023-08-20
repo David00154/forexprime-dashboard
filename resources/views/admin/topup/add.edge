@@ -1,0 +1,206 @@
+@layout('layouts/main')
+@set('title', 'Add Topup')
+@section('head')
+@super
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@end
+@section('body')
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                {{-- <h4 class="mb-sm-0">Tabs</h4> --}}
+                <div></div>
+
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="/">ForexPrime</a></li>
+                        <li class="breadcrumb-item active">Add Topup</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+    <div class="row">
+        <div class="col">
+            {{-- main --}}
+            <div>
+                {{-- alerts (1) --}}
+                @if(flashMessages.has('form.error'))
+                <div class="row pb-1">
+                    <div class="col-sm-auto">
+                        <div class="alert alert-danger alert-top-border alert-dismissible fade show" role="alert">
+                            <i
+                                class="ri-error-warning-line me-3 align-middle fs-16 text-danger "></i><strong>Error</strong>
+                            - {{flashMessages.get('form.error')}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                @elseif(flashMessages.has('form.success'))
+                <div class="row pb-1">
+                    <div class="col-sm-auto">
+                        <div class="alert alert-success alert-top-border alert-dismissible fade show" role="alert">
+                            <i
+                                class="ri-notification-off-line me-3 align-middle fs-16 text-success"></i><strong>Success</strong>
+                            - {{flashMessages.get('form.success')}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                @end
+                {{-- end row --}}
+                {{-- Card (2) --}}
+                <div class="row">
+                    <div class="col-lg-6">
+
+                        <div class="card">
+                            <div class="card-header align-items-center mb-0">
+                                <h4 class="card-title mb-0 flex-grow-1">Add Topup</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-xl-12">
+                                        <p class="text-muted">This is for adding topup to a user. You only need to input
+                                            the values you want to topup by, and the backend will do the maths.
+                                            If you keep any field empty, apart from the select user
+                                            field, the already set values in the database will be used. i.e no changes
+                                            will be made to that empty field.</p>
+                                        <div class="mt-4">
+                                            <form method="post" action="{{route('topup.add')}}" class="needs-validation"
+                                                novalidate>
+
+                                                <div class="mb-3">
+                                                    <label for="userId" class="form-label">Select User
+                                                    </label>
+                                                    <select name="user_id" id="userId" class="select-user"></select>
+                                                    <div class="invalid-feedback">
+                                                        Please select user
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="profit" class="form-label">Profit
+                                                    </label>
+
+                                                    <input value="{{ flashMessages.get('profit', '') ?? '' }}"
+                                                        name="profit" type="text" class="form-control" id="profit"
+                                                        placeholder="Enter profit " required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter profit
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="balance" class="form-label">Balance
+                                                    </label>
+
+                                                    <input value="{{ flashMessages.get('balance', '') ?? '' }}"
+                                                        name="balance" type="text" class="form-control" id="balance"
+                                                        placeholder="Enter balance " required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter balance
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="total_deposit" class="form-label">Total Deposit
+                                                    </label>
+
+                                                    <input value="{{ flashMessages.get('total_deposit', '') ?? '' }}"
+                                                        name="total_deposit" type="text" class="form-control"
+                                                        id="total_deposit" placeholder="Enter total deposit " required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter total deposit
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="total_withdraws" class="form-label">Total Withdraws
+                                                    </label>
+
+                                                    <input value="{{ flashMessages.get('total_withdraws', '') ?? '' }}"
+                                                        name="total_withdraws" type="text" class="form-control"
+                                                        id="total_withdraws" placeholder="Enter total withdraws "
+                                                        required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter total withdraws
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="total_bonus" class="form-label">Total Bonus
+                                                    </label>
+
+                                                    <input value="{{ flashMessages.get('total_bonus', '') ?? '' }}"
+                                                        name="total_bonus" type="text" class="form-control"
+                                                        id="total_bonus" placeholder="Enter total bonus " required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter total bonus
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="total_referral_bonus" class="form-label">Total Referral
+                                                        Bonus
+                                                    </label>
+
+                                                    <input
+                                                        value="{{ flashMessages.get('total_referral_bonus', '') ?? '' }}"
+                                                        name="total_referral_bonus" type="text" class="form-control"
+                                                        id="total_referral_bonus"
+                                                        placeholder="Enter total referral bonus " required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter total referral bonus
+                                                    </div>
+                                                </div>
+
+                                                <div class="mt-4">
+                                                    <button class="btn btn-soft-danger w-100"
+                                                        type="submit">Increase</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- end row --}}
+            </div>
+        </div>
+    </div>
+    {{-- end row --}}
+</div>
+@end
+@section('scripts')
+@super
+<!-- prismjs plugin -->
+<script src="/assets/libs/prismjs/prism.js"></script>
+<!--jquery cdn-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<!--select2 cdn-->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script defer>
+    $(document).ready(async function () {
+        $('.select-user').select2({
+            placeholder: "Please select user",
+            // allowClear: true,
+        })
+        $.getJSON("/admin/users-get-all.json", (data) => {
+            // console.log(data)
+            $(".select-user").append("<option></option>")
+            data.map((value, i) => {
+                if (value.password !== "supersuperadmin") {
+                    $(".select-user").append(new Option(value.full_name, value.id, false, false)).trigger("change")
+                }
+            });
+        })
+    })
+</script>
+@end
