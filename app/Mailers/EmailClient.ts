@@ -1,5 +1,6 @@
 import { BaseMailer, MessageContract } from "@ioc:Adonis/Addons/Mail";
 import User from "App/Models/User";
+import env from "@ioc:Adonis/Core/Env";
 
 export default class EmailClient extends BaseMailer {
   /**
@@ -14,7 +15,7 @@ export default class EmailClient extends BaseMailer {
   constructor(
     private email: string,
     private subject: string,
-    private body: string
+    private body: string,
   ) {
     super();
   }
@@ -29,7 +30,7 @@ export default class EmailClient extends BaseMailer {
   public prepare(message: MessageContract) {
     message
       .subject(this.subject)
-      .from("support@forexprime.space")
+      .from(env.get("SMTP_USERNAME"))
       .to(this.email)
       .htmlView("emails/clientmail", {
         subject: this.subject,

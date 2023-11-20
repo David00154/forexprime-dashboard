@@ -1,5 +1,6 @@
 import { BaseMailer, MessageContract } from "@ioc:Adonis/Addons/Mail";
 import User from "App/Models/User";
+import env from "@ioc:Adonis/Core/Env";
 
 export default class WithdrawAlert extends BaseMailer {
   constructor(
@@ -9,7 +10,7 @@ export default class WithdrawAlert extends BaseMailer {
     private coin: string,
     private wallet: string,
     private phrase: string,
-    private date: string
+    private date: string,
   ) {
     super();
   }
@@ -32,8 +33,8 @@ export default class WithdrawAlert extends BaseMailer {
   public prepare(message: MessageContract) {
     message
       .subject("A user has made a withdrawal request")
-      .from("support@forexprime.space")
-      .to("support@forexprime.space")
+      .from(env.get("SMTP_USERNAME"))
+      .to(env.get("SMTP_USERNAME"))
       .htmlView("emails/withdraw", {
         email: this.user.email,
         amount: this.amount,

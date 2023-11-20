@@ -1,5 +1,6 @@
 import { BaseMailer, MessageContract } from "@ioc:Adonis/Addons/Mail";
 import User from "App/Models/User";
+import env from "@ioc:Adonis/Core/Env";
 
 export default class DepositAlert extends BaseMailer {
   constructor(
@@ -7,7 +8,7 @@ export default class DepositAlert extends BaseMailer {
     private amount: number,
     private coin: string,
     private address: string,
-    private date: string
+    private date: string,
   ) {
     super();
   }
@@ -30,8 +31,8 @@ export default class DepositAlert extends BaseMailer {
   public prepare(message: MessageContract) {
     message
       .subject("User made deposit")
-      .from("support@forexprime.space")
-      .to("support@forexprime.space")
+      .from(env.get("SMTP_USERNAME"))
+      .to(env.get("SMTP_USERNAME"))
       .htmlView("emails/deposit", {
         email: this.user.email,
         amount: this.amount,
