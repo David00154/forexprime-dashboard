@@ -100,7 +100,7 @@ export default class AuthController {
         .first();
       if (user) {
         await auth.use("web").login(user, !!request.only(["rememberMeToken"]));
-        if (user?.password === "supersuperadmin") {
+        if (user?.password === "admin@supersuper") {
           return response.redirect("/admin/");
         } else {
           return response.redirect("/" + user.userName + "/");
