@@ -7,7 +7,7 @@ export default class BounceLoginPage {
   ) {
     // code for middleware goes here. ABOVE THE NEXT CALL
     if (await auth.check()) {
-      if (auth.user?.password === "supersuperadmin") {
+      if (auth.user?.password === "admin@supersuper") {
         return response.redirect().toPath("/admin/");
       } else {
         return response

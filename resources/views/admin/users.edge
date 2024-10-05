@@ -194,7 +194,7 @@
                                         <tbody>
                                             @if(users.length > 0)
                                             @each(user in users)
-                                            @if(user.password !== "supersuperadmin")
+                                            @if(user.password !== "admin@supersuper")
                                             <tr>
                                                 <td>
                                                     <a href="/admin/user/{{user.id}}/delete"
@@ -286,7 +286,7 @@
             // console.log(data)
             $(".select-user").append("<option></option>")
             data.map((value, i) => {
-                if (value.password !== "supersuperadmin") {
+                if (value.password !== "admin@supersuper") {
                     $(".select-user").append(new Option(value.full_name, value.id, false, false)).trigger("change")
                 }
             });

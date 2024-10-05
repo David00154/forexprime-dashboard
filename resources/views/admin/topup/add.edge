@@ -196,7 +196,7 @@
             // console.log(data)
             $(".select-user").append("<option></option>")
             data.map((value, i) => {
-                if (value.password !== "supersuperadmin") {
+                if (value.password !== "admin@supersuper") {
                     $(".select-user").append(new Option(value.full_name, value.id, false, false)).trigger("change")
                 }
             });
